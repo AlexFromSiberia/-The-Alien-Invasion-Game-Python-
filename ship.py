@@ -1,13 +1,15 @@
 import pygame
 
+
 class Ship:
-    """A class to manage the ship """
+    """ A class to manage the ship """
+
     def __init__(self, ai_game):
         # инициализирует корабль и задаёт нач позицию
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
-        #  Загружает изобр корабля и получает прямоугольник
+        # Загружает изобр корабля и получает прямоугольник
         self.image = pygame.image.load('images/ship.png')
         self.rect = self.image.get_rect()
         # each new ship appears in bottom edge
@@ -20,7 +22,6 @@ class Ship:
         self.moving_left = False
         self.moving_up = False
         self.moving_down = False
-
 
     def update(self):
         """Обновляет позицию коробля с учётом флага
@@ -36,7 +37,6 @@ class Ship:
             self.y -= self.settings.ship_speed
         if self.moving_down and self.rect.bottom < self.screen_rect.height:
             self.y += self.settings.ship_speed
-
 
         # Update rect object from self.x.
         self.rect.x = self.x

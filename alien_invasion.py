@@ -14,17 +14,17 @@ class AlienInvasion:
     """Class for managing sourses and game behaviour"""
 
     def __init__(self):
-        """Initialize game and create game resourses
+        """ Initialize game and create game resourses
         pygame.display.set_mode() создает окно, в котором
         прорисовываются все графические элементы игры.
-        Аргумент (1200, 800) - размер окна"""
+        Аргумент (1200, 800) - размер окна. """
         pygame.init()
         self.settings = Settings()
 
         # Start game in window or full screen
-        if self.settings.full_screen_mode == False:
+        if not self.settings.full_screen_mode:
             self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
-        elif self.settings.full_screen_mode == True:
+        elif self.settings.full_screen_mode:
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
             self.settings.screen_width = self.screen.get_rect().width
             self.settings.screen_height = self.screen.get_rect().height
@@ -50,9 +50,8 @@ class AlienInvasion:
         # Make the play button
         self.play_button = Button(self, "Play ! ")
 
-
     def _ship_hit(self):
-        """Respond to the ship being hit"""
+        """ Respond to the ship being hit """
         if self.stats.ships_left > 0:
             # Decrement ships_left.
             self.stats.ships_left -= 1
@@ -70,24 +69,21 @@ class AlienInvasion:
         else:
             self.stats.game_active = False
 
-
     def _check_fleet_edges(self):
-        """Respond appropriately if any aliens have reached an edge."""
+        """ Respond appropriately if any aliens have reached an edge """
         for alien in self.aliens.sprites():
             if alien.check_edges():
                 self._change_fleet_direction()
                 break
 
     def _change_fleet_direction(self):
-        """Drop the entire fleet and change the fleet's direction."""
+        """ Drop the entire fleet and change the fleet's direction """
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
 
-
-
     def _create_fleet(self):
-        """Create the fleet of aliens."""
+        """ Create the fleet of aliens """
         # Make an alien.
         # Create an alien and find the number of aliens in a row.
         # Spacing between each alien is equal to one alien width.
@@ -108,7 +104,6 @@ class AlienInvasion:
                 # Create an alien and place it in the row.
                 self._create_alien(alien_number, row_number)
 
-
     def _create_alien(self, alien_number, row_number):
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
@@ -128,7 +123,6 @@ class AlienInvasion:
 
             self._update_screen()
 
-
     def _update_alliens(self):
         """Check if the fleet is at an edge,
          then update the positions of all aliens in the fleet.
@@ -142,7 +136,6 @@ class AlienInvasion:
         # Look for aliens hitting the bottom of the screen.
         self._check_aliens_bottom()
 
-
     def _check_aliens_bottom(self):
         """Check if any aliens have reached the bottom of the screen."""
         screen_rect = self.screen.get_rect()
@@ -151,7 +144,6 @@ class AlienInvasion:
                 # Treat this the same as if the ship got hit.
                 self._ship_hit()
                 break
-
 
     def _update_bullets(self):
         """ Update position of bullets and get rid of old ones"""
@@ -186,7 +178,7 @@ class AlienInvasion:
 
     def _update_screen(self):
         # При каждом переходе цикла перерисовывается экран
-        #self.screen.fill(self.settings.bg_colour)
+        # self.screen.fill(self.settings.bg_colour)
 
         self.image = pygame.image.load('images/earth.png')
         self.rect = self.image.get_rect()
@@ -205,7 +197,6 @@ class AlienInvasion:
         # Draw the play button
         if not self.stats.game_active:
             self.play_button.draw_button()
-
 
         # Make the most recently drown screen visible
         pygame.display.flip()
@@ -242,7 +233,6 @@ class AlienInvasion:
             self._create_fleet()
             self.ship.center_ship()
 
-
     def _check_key_up_events(self, event):
         """Respond to key releases."""
         if event.key == pygame.K_RIGHT:
@@ -275,13 +265,6 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
-
-        # change screen mode(DOEST WORK YET!!!)
-        """elif event.key == pygame.K_w:
-            self.settings.full_screen_mode = False
-        elif event.key == pygame.K_f:
-            self.settings.full_screen_mode = True"""
-
 
 
 if __name__ == '__main__':
